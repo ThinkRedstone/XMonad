@@ -14,6 +14,7 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Grid
 import XMonad.Layout.TwoPane
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Fullscreen hiding (fullscreenEventHook)
 
 import qualified XMonad.StackSet as W
 import qualified XMonad.Actions.FlexibleManipulate as Flex
@@ -25,6 +26,8 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.InsertPosition
+
+import XMonad.Hooks.EwmhDesktops
 
 instance Default (Tall a) where
     def = Tall 1 0.05 0.65
@@ -106,6 +109,7 @@ windowSortHook = composeAll . concat $
     , [(className =? x ) --> doShift "x" | x <- myShifts "x"]
     , [(className =? x ) --> doShift "c" | x <- myShifts "c"]
     , [(className =? x ) --> doShift "v" | x <- myShifts "v"]
+    , [ isFullscreen --> (doF W.focusDown <+> doFullFloat)]
     ]
     where
     myShifts "a" = ["Chromium"]
@@ -121,10 +125,10 @@ windowSortHook = composeAll . concat $
 
 main = xmonad $ ewmh $ pagerHints $ def {focusFollowsMouse = False,
                                          clickJustFocuses = False,
-                                         layoutHook = myLayout,
+                                         layoutHook = fullscreenFull myLayout,
                                          workspaces = [a:[]| a<-"asdfzxcv"],
                                          keys = myKeys,
                                          mouseBindings = myMouse,
                                          manageHook= manageDocks <+> windowSortHook <+> manageHook def,
-                                         handleEventHook = docksEventHook,
+                                         handleEventHook = fullscreenEventHook <+> docksEventHook,
                                          startupHook = setWMName "LG3D"}
