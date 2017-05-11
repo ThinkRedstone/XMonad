@@ -3,6 +3,7 @@
 import Data.Default
 import qualified Data.Map as M
 import System.Exit
+import Data.List
 
 import XMonad
 
@@ -20,7 +21,7 @@ import XMonad.ManageHook
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
-
+import XMonad.Hooks.InsertPosition
 
 instance Default (Tall a) where
     def = Tall 1 0.05 0.65
@@ -74,7 +75,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ++
     --switch to, or switch window to, a specific workspace
     [((m .|. modMask, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_a, xK_s, xK_d, xK_f, xK_z, xK_x, xK_c, xK_v]
+        | (i, k) <- zip (delete "f" (XMonad.workspaces conf)) [xK_a, xK_s, xK_d, xK_z, xK_x, xK_c, xK_v]
         , (f, m) <- [(W.greedyView, 0), (\i -> W.greedyView i . W.shift i, shiftMask), (W.shift, controlMask)]]
 
 myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
@@ -90,6 +91,8 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
 -- Sort windows
 windowSortHook = composeAll . concat $
     [ [isDialog --> doFloat]
+    , [maybeToDefinite $ (className =? x ) -?> insertPosition Master Newer | x <- masters]
+    , [insertPosition Below Newer]
     , [(className =? x ) --> doShift "a" | x <- myShifts "a"]
     , [(className =? x ) --> doShift "s" | x <- myShifts "s"]
     , [(className =? x ) --> doShift "d" | x <- myShifts "d"]
@@ -98,7 +101,6 @@ windowSortHook = composeAll . concat $
     , [(className =? x ) --> doShift "x" | x <- myShifts "x"]
     , [(className =? x ) --> doShift "c" | x <- myShifts "c"]
     , [(className =? x ) --> doShift "v" | x <- myShifts "v"]
-    , [(className =? x ) --> (doF $ W.shiftMaster) | x <- masters]
     ]
     where
     myShifts "a" = ["Chromium"]
