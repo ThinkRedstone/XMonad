@@ -17,6 +17,7 @@ import XMonad.Util.WindowProperties
 import XMonad.ManageHook
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.SetWMName
 
 
 instance Default (Tall a) where
@@ -104,4 +105,5 @@ main = xmonad $ def {focusFollowsMouse = False,
                      workspaces = [a:[]| a<-"asdfzxcv"],
                      keys = myKeys,
                      mouseBindings = myMouse,
-                     manageHook= windowSortHook <+> manageHook def}
+                     manageHook= windowSortHook <+> manageHook def,
+                     startupHook = setWMName "LG3D"}
