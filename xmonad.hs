@@ -62,5 +62,20 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
         | (i, k) <- zip (XMonad.workspaces conf) [xK_a, xK_s, xK_d, xK_f, xK_z, xK_x, xK_c, xK_v]
         , (f, m) <- [(W.greedyView, 0), (\i -> W.greedyView i . W.shift i, shiftMask)]]
 
+myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
+    -- mod-button1 %! Set the window to floating mode and move by dragging
+      ((modMask, button1), \w -> focus w >> mouseMoveWindow w )
+    -- mod-button2 %! unfloat the window
+    , ((modMask, button2),  windows . W.sink)
+    -- mod-button3 %! Set the window to floating mode and resize by dragging
+    , ((modMask, button3), \w -> focus w >> mouseResizeWindow w )
+    -- you may also bind events to the mouse scroll wheel (button4 and button5)
+    ]
 
-main = xmonad $ def {layoutHook = myLayout, workspaces = [a:[]| a<-"asdfzxcv"], keys = myKeys}
+
+main = xmonad $ def {focusFollowsMouse = False,
+                     clickJustFocuses = False,
+                     layoutHook = myLayout,
+                     workspaces = [a:[]| a<-"asdfzxcv"],
+                     keys = myKeys,
+                     mouseBindings = myMouse}
