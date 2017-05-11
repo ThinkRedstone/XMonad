@@ -72,6 +72,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((controlMask .|. modMask, xK_Left               ),  prevWS) -- %! switch to workspace on the left
     , ((shiftMask .|. controlMask .|. modMask, xK_Right),  shiftToNext >> nextWS) -- %! shift window to workspace on the right
     , ((shiftMask .|. controlMask .|. modMask, xK_Left ),  shiftToPrev >> prevWS) -- %! shift window to workspace on the left
+
+    , (( modMask, xK_f ),  windows $ W.greedyView "f") -- %! switch to workspace f (we dont want the shortcuts to move windows into f)
     ]
     ++
     --switch to, or switch window to, a specific workspace
@@ -121,5 +123,6 @@ main = xmonad $ def {focusFollowsMouse = False,
                      workspaces = [a:[]| a<-"asdfzxcv"],
                      keys = myKeys,
                      mouseBindings = myMouse,
-                     manageHook= windowSortHook <+> manageHook def,
+                     manageHook= manageDocks <+> windowSortHook <+> manageHook def,
+                     handleEventHook = docksEventHook,
                      startupHook = setWMName "LG3D"}
