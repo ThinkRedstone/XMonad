@@ -62,7 +62,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- quit, or restart
     , ((modMask .|. mod4Mask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
-    , ((modMask .|. mod4Mask, xK_r     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
+    , ((modMask .|. mod4Mask, xK_r     ), spawn "xmonad --recompile && xmonad --restart && killall taffybar-linux-x86_64 && taffybar") -- %! Restart xmonad and taffybar
     -- media controls
     , ((controlMask .|. shiftMask, xK_KP_Begin ), spawn "clementine --play-pause") -- %! play pause clementine
     , ((controlMask .|. shiftMask, xK_KP_Up ),    spawn "clementine --volume-up") -- %! volume up
