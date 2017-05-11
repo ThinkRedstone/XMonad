@@ -14,6 +14,7 @@ import XMonad.Layout.TwoPane
 import XMonad.Layout.NoBorders
 
 import qualified XMonad.StackSet as W
+import qualified XMonad.Actions.FlexibleManipulate as Flex
 import XMonad.Util.WindowProperties
 import XMonad.Actions.CycleWS
 
@@ -84,7 +85,7 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
     -- mod-button2 %! unfloat the window
     , ((modMask, button2),  windows . W.sink)
     -- mod-button3 %! Set the window to floating mode and resize by dragging
-    , ((modMask, button3), \w -> focus w >> mouseResizeWindow w )
+    , ((modMask, button3), \w -> focus w >> Flex.mouseWindow Flex.resize w )
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
