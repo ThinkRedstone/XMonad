@@ -6,6 +6,8 @@ import System.Exit
 import Data.List
 
 import XMonad
+import System.Taffybar.Hooks.PagerHints
+import XMonad.Hooks.EwmhDesktops
 
 import XMonad.Layout
 import XMonad.Layout.PerWorkspace
@@ -117,12 +119,12 @@ windowSortHook = composeAll . concat $
     masters = ["Steam", "jetbrains-pycharm-ce", "jetbrains-idea-ce", "Deluge"]
 
 
-main = xmonad $ def {focusFollowsMouse = False,
-                     clickJustFocuses = False,
-                     layoutHook = myLayout,
-                     workspaces = [a:[]| a<-"asdfzxcv"],
-                     keys = myKeys,
-                     mouseBindings = myMouse,
-                     manageHook= manageDocks <+> windowSortHook <+> manageHook def,
-                     handleEventHook = docksEventHook,
-                     startupHook = setWMName "LG3D"}
+main = xmonad $ ewmh $ pagerHints $ def {focusFollowsMouse = False,
+                                         clickJustFocuses = False,
+                                         layoutHook = myLayout,
+                                         workspaces = [a:[]| a<-"asdfzxcv"],
+                                         keys = myKeys,
+                                         mouseBindings = myMouse,
+                                         manageHook= manageDocks <+> windowSortHook <+> manageHook def,
+                                         handleEventHook = docksEventHook,
+                                         startupHook = setWMName "LG3D"}
