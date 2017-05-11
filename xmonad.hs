@@ -16,6 +16,7 @@ import XMonad.Util.WindowProperties
 
 import XMonad.ManageHook
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 
 
 instance Default (Tall a) where
@@ -72,10 +73,35 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
+-- Sort windows
+windowSortHook = composeAll . concat $
+    [ [isDialog --> doFloat]
+    , [(className =? x ) --> doShift "a" | x <- myShifts "a"]
+    , [(className =? x ) --> doShift "s" | x <- myShifts "s"]
+    , [(className =? x ) --> doShift "d" | x <- myShifts "d"]
+    , [(className =? x ) --> doShift "f" | x <- myShifts "f"]
+    , [(className =? x ) --> doShift "z" | x <- myShifts "z"]
+    , [(className =? x ) --> doShift "x" | x <- myShifts "x"]
+    , [(className =? x ) --> doShift "c" | x <- myShifts "c"]
+    , [(className =? x ) --> doShift "v" | x <- myShifts "v"]
+    , [(className =? x ) --> (doF $ W.shiftMaster) | x <- masters]
+    ]
+    where
+    myShifts "a" = ["Chromium"]
+    myShifts "s" = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "dota2"]
+    myShifts "d" = ["Skype", "Steam", "discord"]
+    myShifts "f" = ["Clementine", "Deluge"]
+    myShifts "z" = []
+    myShifts "x" = []
+    myShifts "c" = []
+    myShifts "v" = []
+    masters = ["Steam", "jetbrains-pycharm-ce", "jetbrains-idea-ce", "Deluge"]
+
 
 main = xmonad $ def {focusFollowsMouse = False,
                      clickJustFocuses = False,
                      layoutHook = myLayout,
                      workspaces = [a:[]| a<-"asdfzxcv"],
                      keys = myKeys,
-                     mouseBindings = myMouse}
+                     mouseBindings = myMouse,
+                     manageHook= windowSortHook <+> manageHook def}
