@@ -96,7 +96,7 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
 -- Sort windows
 windowSortHook = composeAll . concat $
     [ [isDialog --> doFloat]
-    , [maybeToDefinite $ (className =? x ) -?> insertPosition Master Newer | x <- masters]
+    , [maybeToDefinite $ (className =? x <||> title =? "Steam") -?> insertPosition Master Newer | x <- masters]
     , [insertPosition Below Newer]
     , [(className =? x ) --> doShift "a" | x <- myShifts "a"]
     , [(className =? x ) --> doShift "s" | x <- myShifts "s"]
@@ -116,7 +116,7 @@ windowSortHook = composeAll . concat $
     myShifts "x" = []
     myShifts "c" = []
     myShifts "v" = []
-    masters = ["Steam", "jetbrains-pycharm-ce", "jetbrains-idea-ce", "Deluge"]
+    masters = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "Deluge"]
 
 
 main = xmonad $ ewmh $ pagerHints $ def {focusFollowsMouse = False,
