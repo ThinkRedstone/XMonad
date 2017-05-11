@@ -33,7 +33,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- launching and killing programs
     [ ((modMask .|. controlMask, xK_t), spawn "xfce4-terminal") -- %! Launch terminal
     , ((modMask .|. controlMask, xK_f), spawn "thunar") -- %! Launch file browser
-    , ((modMask,                 xK_r), spawn "dmenu_run") -- %! Launch dmenu
+    , ((modMask,                 xK_r), spawn "dmenu_run -sf '#ff0000' -sb '#111111'") -- %! Launch dmenu
     , ((modMask,                 xK_q), whenX (focusedHasProperty (Not $ ClassName "dota2")) kill ) -- %! Close the focused window
 
     , ((modMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
@@ -58,6 +58,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- quit, or restart
     , ((modMask .|. mod4Mask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
     , ((modMask .|. mod4Mask, xK_r     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
+    -- media controls
+    , ((controlMask .|. shiftMask, xK_KP_Begin ), spawn "clementine --play-pause") -- %! play pause clementine
+    , ((controlMask .|. shiftMask, xK_KP_Up ),    spawn "clementine --volume-up") -- %! volume up
+    , ((controlMask .|. shiftMask, xK_KP_Down),   spawn "clementine --volume-down") -- %! volume down
+    , ((controlMask .|. shiftMask, xK_KP_Right ), spawn "clementine --next") -- %! next song
+    , ((controlMask .|. shiftMask, xK_KP_Left ),  spawn "clementine --previous") -- %! previous song
     ]
     ++
     --switch to, or switch window to, a specific workspace
