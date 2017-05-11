@@ -10,6 +10,7 @@ import XMonad.Layout
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Grid
 import XMonad.Layout.TwoPane
+import XMonad.Layout.NoBorders
 
 import qualified XMonad.StackSet as W
 import XMonad.Util.WindowProperties
@@ -26,7 +27,7 @@ instance Default (Tall a) where
 instance Default (TwoPane a) where
     def = TwoPane 0.05 0.5
 
-myLayout = avoidStruts $ onWorkspace "a" (Full ||| (def :: Tall a)) $ onWorkspace "s" ((def :: Tall a) ||| Full) $ onWorkspace "d" (def :: Tall a) $ onWorkspace "f" (def :: TwoPane a) $ Grid ||| (def :: Tall a)
+myLayout = avoidStruts $ smartBorders $ onWorkspace "a" (Full ||| (def :: Tall a)) $ onWorkspace "s" ((def :: Tall a) ||| Full) $ onWorkspace "d" (Tall 1 0.05 0.5) $ onWorkspace "f" (def :: TwoPane a) $ Grid ||| (def :: Tall a)
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- launching and killing programs
