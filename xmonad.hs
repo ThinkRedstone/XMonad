@@ -14,6 +14,7 @@ import XMonad.Layout.NoBorders
 
 import qualified XMonad.StackSet as W
 import XMonad.Util.WindowProperties
+import XMonad.Actions.CycleWS
 
 import XMonad.ManageHook
 import XMonad.Hooks.ManageDocks
@@ -64,12 +65,17 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((controlMask .|. shiftMask, xK_KP_Down),   spawn "clementine --volume-down") -- %! volume down
     , ((controlMask .|. shiftMask, xK_KP_Right ), spawn "clementine --next") -- %! next song
     , ((controlMask .|. shiftMask, xK_KP_Left ),  spawn "clementine --previous") -- %! previous song
+    -- Switch to nearby workspaces
+    , ((controlMask .|. modMask, xK_Right              ),  nextWS) -- %! switch to workspace on the right
+    , ((controlMask .|. modMask, xK_Left               ),  prevWS) -- %! switch to workspace on the left
+    , ((shiftMask .|. controlMask .|. modMask, xK_Right),  shiftToNext >> nextWS) -- %! shift window to workspace on the right
+    , ((shiftMask .|. controlMask .|. modMask, xK_Left ),  shiftToPrev >> prevWS) -- %! shift window to workspace on the left
     ]
     ++
     --switch to, or switch window to, a specific workspace
     [((m .|. modMask, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_a, xK_s, xK_d, xK_f, xK_z, xK_x, xK_c, xK_v]
-        , (f, m) <- [(W.greedyView, 0), (\i -> W.greedyView i . W.shift i, shiftMask)]]
+        , (f, m) <- [(W.greedyView, 0), (\i -> W.greedyView i . W.shift i, shiftMask), (W.shift, controlMask)]]
 
 myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
     -- mod-button1 %! Set the window to floating mode and move by dragging
