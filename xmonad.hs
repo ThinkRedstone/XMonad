@@ -99,7 +99,7 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
 -- Sort windows
 windowSortHook = composeAll . concat $
     [ [isDialog --> doFloat]
-    , [maybeToDefinite $ (className =? x <||> title =? "Steam") -?> insertPosition Master Newer | x <- masters]
+    , [(className =? x <||> title =? "Steam") --> insertPosition Master Newer | x <- masters]
     , [insertPosition Below Newer]
     , [(className =? x ) --> doShift "a" | x <- myShifts "a"]
     , [(className =? x ) --> doShift "s" | x <- myShifts "s"]
