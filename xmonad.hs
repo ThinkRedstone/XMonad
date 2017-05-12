@@ -109,7 +109,7 @@ windowSortHook = composeAll . concat $
     , [(className =? x ) --> doShift "x" | x <- myShifts "x"]
     , [(className =? x ) --> doShift "c" | x <- myShifts "c"]
     , [(className =? x ) --> doShift "v" | x <- myShifts "v"]
-    , [ isFullscreen --> (doF W.focusDown <+> doFullFloat)]
+    , [ isFullscreen --> doFullFloat]
     ]
     where
     myShifts "a" = ["Chromium"]
