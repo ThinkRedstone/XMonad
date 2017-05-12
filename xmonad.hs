@@ -61,7 +61,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_Up    ), sendMessage Expand) -- %! Expand the master area
 
     -- floating layer support
---    , ((modMask,               xK_t     ), withFocused $ windows . W.sink) -- %! Push window back into tiling
+    , ((modMask,               xK_t     ), withFocused $ windows . W.sink) -- %! Push window back into tiling
 
     -- quit, or restart
     , ((modMask .|. mod4Mask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
