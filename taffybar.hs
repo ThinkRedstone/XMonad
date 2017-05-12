@@ -6,10 +6,7 @@ import System.Taffybar.FreedesktopNotifications
 import System.Taffybar.MPRIS
 import System.Taffybar.Pager
 import Text.Printf
-
-import System.Taffybar.Widgets.PollingBar
-import System.Taffybar.Widgets.PollingGraph
-
+import System.Taffybar.Battery
 import System.Taffybar.WorkspaceSwitcher
 
 redForeground = colorize "#ff0000" "#000000"
@@ -26,7 +23,9 @@ main = do
               display track = printf "%s - %s" (artist track) (title track)
       tray = systrayNew
       wss = wspaceSwitcherNew pager
-  defaultTaffybar defaultTaffybarConfig { startWidgets = [ wss ]
+      battery = batteryBarNew defaultBatteryConfig 10
+      batteryTime = textBatteryNew "| $time$" 10
+  defaultTaffybar defaultTaffybarConfig { startWidgets = [wss, battery, batteryTime]
                                         , endWidgets = [clock, tray, mpris ]
                                         , barPosition = Bottom
                                         , barHeight = 30
