@@ -1,4 +1,3 @@
-{-# LANGUAGE FlexibleContexts #-}
 
 import Data.Default
 import qualified Data.Map as M
@@ -88,18 +87,18 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
     -- mod-button1 %! Set the window to floating mode and move by dragging
-      ((modMask, button1), \w -> focus w >> mouseMoveWindow w )
+      ((modMask, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
     -- mod-button2 %! unfloat the window
     , ((modMask, button2),  windows . W.sink)
     -- mod-button3 %! Set the window to floating mode and resize by dragging
-    , ((modMask, button3), \w -> focus w >> Flex.mouseWindow Flex.resize w )
+    , ((modMask, button3), \w -> focus w >> Flex.mouseWindow Flex.resize w >> windows W.shiftMaster)
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
 -- Sort windows
 windowSortHook = composeAll . concat $
-    [ [isDialog --> doFloat]
-    , [(className =? x <||> title =? "Steam") --> insertPosition Master Newer | x <- masters]
+    [ [isDialog --> doFloat <+> insertPosition Above Newer] --insert dialog above the focused window who presumably opened it and float it
+    , [(className =? x <||> title =? "Steam") --> insertPosition Master Newer | x <- masters] --Insert windows in masters as the master window; steam has annoying window classes so we match it by title
     , [insertPosition Below Newer]
     , [(className =? x ) --> doShift "a" | x <- myShifts "a"]
     , [(className =? x ) --> doShift "s" | x <- myShifts "s"]
