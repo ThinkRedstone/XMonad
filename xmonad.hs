@@ -34,7 +34,7 @@ instance Default (Tall a) where
 instance Default (TwoPane a) where
     def = TwoPane 0.05 0.5
 
-myLayout = avoidStruts $ smartBorders $ onWorkspace "a" (Full ||| (def :: Tall a)) $ onWorkspace "s" ((def :: Tall a) ||| Full) $ onWorkspace "d" (Tall 1 0.05 0.5) $ onWorkspace "f" (def :: TwoPane a) $ Grid ||| (def :: Tall a)
+myLayout = avoidStruts $ smartBorders $ onWorkspace "a" (Full ||| (def :: Tall a)) $ onWorkspace "s" ((def :: Tall a) ||| Full) $ onWorkspace "d" (Tall 1 0.05 0.5) $ onWorkspace "f" (def :: TwoPane a) $ (GridRatio (1/1)) ||| (def :: Tall a)
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- launching and killing programs
@@ -60,7 +60,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_Up    ), sendMessage Expand) -- %! Expand the master area
 
     -- floating layer support
---    , ((modMask,               xK_t     ), withFocused $ windows . W.sink) -- %! Push window back into tiling
+    , ((modMask,               xK_t     ), withFocused $ windows . W.sink) -- %! Push window back into tiling
 
     -- quit, or restart
     , ((modMask .|. mod4Mask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
