@@ -4,6 +4,11 @@ import System.Taffybar.Systray
 import System.Taffybar.SimpleClock
 import System.Taffybar.FreedesktopNotifications
 import System.Taffybar.MPRIS
+
+import System.Taffybar.Widgets.PollingLabel
+import qualified Graphics.UI.Gtk as Gtk
+import System.Process
+
 import System.Taffybar.Pager
 import Text.Printf
 
@@ -13,6 +18,11 @@ import System.Taffybar.Widgets.PollingGraph
 import System.Taffybar.WorkspaceSwitcher
 
 redForeground = colorize "#ff0000" "#000000"
+
+renderLabel pollingLabel = do
+        label <- pollingLabel
+        Gtk.widgetShowAll label
+        return $ Gtk.toWidget label
 
 main = do
   pager <- pagerNew defaultPagerConfig {  emptyWorkspace = wrap " " " " . colorize "#404040" "#000000"
@@ -26,7 +36,8 @@ main = do
               display track = printf "%s - %s" (artist track) (title track)
       tray = systrayNew
       wss = wspaceSwitcherNew pager
-  defaultTaffybar defaultTaffybarConfig { startWidgets = [ wss ]
+      layoutIndicator = renderLabel $ pollingLabelNew "err" 0.1 (readProcess "xkblayout-state" ["print", "%s"] [])
+  defaultTaffybar defaultTaffybarConfig { startWidgets = [wss, layoutIndicator]
                                         , endWidgets = [clock, tray, mpris ]
                                         , barPosition = Bottom
                                         , barHeight = 30
