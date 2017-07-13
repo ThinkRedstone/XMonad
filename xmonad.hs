@@ -97,7 +97,7 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
 
 -- Sort windows
 windowSortHook = composeAll . concat $
-    [ [isDialog --> doFloat <+> insertPosition Above Newer] --insert dialog above the focused window who presumably opened it and float it
+    [ [isDialog --> doFloat <+> insertPosition Master Newer] --insert dialog in master because otherwise it gets covered by other dialog and float it
     , [(className =? x <||> title =? "Steam") --> insertPosition Master Newer | x <- masters] --Insert windows in masters as the master window; steam has annoying window classes so we match it by title
     , [insertPosition Below Newer]
     , [(className =? x ) --> doShift "a" | x <- myShifts "a"]
