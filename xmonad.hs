@@ -78,6 +78,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((shiftMask .|. controlMask .|. modMask, xK_Left ),  shiftToPrev >> prevWS) -- %! shift window to workspace on the left
 
     , (( modMask, xK_f ),  windows $ W.greedyView "f") -- %! switch to workspace f (we dont want the shortcuts to move windows into f)
+    , ((controlMask .|. modMask, xK_r), spawn "roccatnythcontrol -a 1")
     ]
     ++
     --switch to, or switch window to, a specific workspace
@@ -112,7 +113,7 @@ windowSortHook = composeAll . concat $
     ]
     where
     myShifts "a" = ["Chromium"]
-    myShifts "s" = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "dota2"]
+    myShifts "s" = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "dota2", "Atom"]
     myShifts "d" = ["Skype", "Steam", "discord"]
     myShifts "f" = ["Clementine", "Deluge"]
     myShifts "z" = []
