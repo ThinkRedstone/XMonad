@@ -3,6 +3,7 @@ import Data.Default
 import qualified Data.Map as M
 import System.Exit
 import Data.List
+import Data.Char
 
 import XMonad
 import System.Taffybar.Hooks.PagerHints
@@ -101,7 +102,7 @@ windowSortHook = composeAll . concat $
     [ [isDialog --> doFloat <+> insertPosition Master Newer] --insert dialog in master because otherwise it gets covered by other dialog and float it
     , [(className =? x <||> title =? "Steam") --> insertPosition Master Newer | x <- masters] --Insert windows in masters as the master window; steam has annoying window classes so we match it by title
     , [insertPosition Below Newer]
-    , [(className =? x ) --> doShift "a" | x <- myShifts "a"]
+    , [(className =? x <&&> appName =? (map toLower x)) --> doShift "a" | x <- myShifts "a"]
     , [(className =? x ) --> doShift "s" | x <- myShifts "s"]
     , [(className =? x ) --> doShift "d" | x <- myShifts "d"]
     , [(className =? x ) --> doShift "f" | x <- myShifts "f"]
