@@ -114,14 +114,14 @@ windowSortHook = composeAll . concat $
     ]
     where
     myShifts "a" = ["Chromium"]
-    myShifts "s" = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "dota2", "Atom"]
+    myShifts "s" = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "jetbrains-webstorm", "dota2", "Atom"]
     myShifts "d" = ["Skype", "Steam", "discord"]
     myShifts "f" = ["Clementine", "Deluge"]
     myShifts "z" = []
     myShifts "x" = []
     myShifts "c" = []
     myShifts "v" = []
-    masters = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "Deluge"]
+    masters = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "jetbrains-webstorm", "Deluge"]
 
 
 main = xmonad $ ewmh $ pagerHints $ def {focusFollowsMouse = False,
