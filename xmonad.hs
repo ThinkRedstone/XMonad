@@ -26,6 +26,8 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.InsertPosition
+import XMonad.Util.Paste
+
 
 import XMonad.Hooks.EwmhDesktops
 
@@ -34,6 +36,13 @@ instance Default (Tall a) where
 
 instance Default (TwoPane a) where
     def = TwoPane 0.05 0.5
+ifElse :: X Bool -> X () -> X () -> X ()
+ifElse condition true false = do
+    b <- condition
+    if b then true else false
+
+keyPassThrough :: (KeyMask, KeySym) -> (X Bool, X ()) -> ((KeyMask, KeySym), X ())
+keyPassThrough (keyMask, keySym) (condition, action) = ((keyMask, keySym) , ifElse condition action (sendKey keyMask keySym))
 
 myLayout = avoidStruts $ smartBorders $ onWorkspace "a" (Full ||| (def :: Tall a)) $ onWorkspace "s" ((def :: Tall a) ||| Full) $ onWorkspace "d" (Tall 1 0.05 0.5) $ onWorkspace "f" (def :: TwoPane a) $ (GridRatio (1/1)) ||| (def :: Tall a)
 
@@ -41,8 +50,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- launching and killing programs
     [ ((modMask .|. controlMask, xK_t), spawn "xfce4-terminal") -- %! Launch terminal
     , ((modMask .|. controlMask, xK_f), spawn "thunar") -- %! Launch file browser
-    , ((modMask,                 xK_r), spawn "dmenu_run -sf '#ff0000' -sb '#111111'") -- %! Launch dmenu
-    , ((modMask,                 xK_q), whenX (focusedHasProperty (Not $ ClassName "dota2")) kill ) -- %! Close the focused window
+    , (keyPassThrough (modMask,  xK_r) (focusedHasProperty (Not $ ClassName "dota2"), spawn "dmenu_run -sf '#ff0000' -sb '#111111'")) -- %! Launch dmenu
+    , (keyPassThrough (modMask,  xK_q) (focusedHasProperty (Not $ ClassName "dota2"), kill)) -- %! Close the focused window
 
     , ((modMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
 
