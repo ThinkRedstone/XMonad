@@ -108,19 +108,23 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
     ]
 
 -- Sort windows
-windowSortHook = composeAll . concat $
-    [ [isDialog --> doFloat <+> insertPosition Master Newer] --insert dialog in master because otherwise it gets covered by other dialog and float it
-    , [(className =? x <||> title =? "Steam") --> insertPosition Master Newer | x <- masters] --Insert windows in masters as the master window; steam has annoying window classes so we match it by title
-    , [insertPosition Below Newer]
-    , [(className =? x <&&> appName =? (map toLower x)) --> doShift "a" | x <- myShifts "a"]
-    , [(className =? x ) --> doShift "s" | x <- myShifts "s"]
-    , [(className =? x ) --> doShift "d" | x <- myShifts "d"]
-    , [(className =? x ) --> doShift "f" | x <- myShifts "f"]
-    , [(className =? x ) --> doShift "z" | x <- myShifts "z"]
-    , [(className =? x ) --> doShift "x" | x <- myShifts "x"]
-    , [(className =? x ) --> doShift "c" | x <- myShifts "c"]
-    , [(className =? x ) --> doShift "v" | x <- myShifts "v"]
-    , [ isFullscreen --> doFullFloat]
+windowSortHook = composeAll $
+    [ composeOne . concat $ --hooks to decide the position of a window
+        [ [isDialog -?> doFloat <+> insertPosition Above Newer]--insert dialog above current window because otherwise it gets covered by other dialog and float it
+        , [(className =? x <||> title =? "Steam") -?> insertPosition Master Newer | x <- masters]  --Insert windows in masters as the master window; steam has annoying window classes so we match it by title
+        , [return True -?> insertPosition Below Newer ] --default insert position, the always true Query Bool guarantees that this hook happens if all others fail
+        ]
+    , composeOne . concat $ --hooks that decide the workspace of a window
+        [ [(className =? x <&&> appName =? (map toLower x)) -?> doShift "a" | x <- myShifts "a"]
+        , [(className =? x ) -?> doShift "s" | x <- myShifts "s"]
+        , [(className =? x ) -?> doShift "d" | x <- myShifts "d"]
+        , [(className =? x ) -?> doShift "f" | x <- myShifts "f"]
+        , [(className =? x ) -?> doShift "z" | x <- myShifts "z"]
+        , [(className =? x ) -?> doShift "x" | x <- myShifts "x"]
+        , [(className =? x ) -?> doShift "c" | x <- myShifts "c"]
+        , [(className =? x ) -?> doShift "v" | x <- myShifts "v"]
+        ]
+    , isFullscreen --> doFullFloat --handle for fullscreen windows
     ]
     where
     myShifts "a" = ["Chromium"]
