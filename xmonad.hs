@@ -7,7 +7,6 @@ import Data.Char
 import Data.Maybe
 
 import XMonad
-import System.Taffybar.Hooks.PagerHints
 import XMonad.Hooks.EwmhDesktops
 
 import XMonad.Layout
@@ -75,7 +74,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- quit, or restart
     , ((modMask .|. mod4Mask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
-    , ((modMask .|. mod4Mask, xK_r     ), spawn "xmonad --recompile && xmonad --restart && killall taffybar-linux-x86_64 && taffybar") -- %! Restart xmonad and taffybar
+    , ((modMask .|. mod4Mask, xK_r     ), spawn "xmonad --recompile && xmonad --restart && killall polybar && polybar example") -- %! Restart xmonad and taffybar
     -- media controls
     , ((controlMask .|. shiftMask, xK_KP_Begin ), spawn "clementine --play-pause") -- %! play pause clementine
     , ((controlMask .|. shiftMask, xK_KP_Up ),    spawn "clementine --volume-up") -- %! volume up
@@ -138,7 +137,7 @@ windowSortHook = composeAll $
     masters = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "jetbrains-webstorm", "Deluge"]
 
 
-main = xmonad $ ewmh $ pagerHints $ def {focusFollowsMouse = False,
+main = xmonad $ ewmh $ def {focusFollowsMouse = False,
                                          clickJustFocuses = False,
                                          layoutHook = fullscreenFull myLayout,
                                          workspaces = [a:[]| a<-"asdfzxcv"],
