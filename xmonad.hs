@@ -44,6 +44,10 @@ ifElse condition true false = do
 keyPassThrough :: (KeyMask, KeySym) -> (X Bool, X ()) -> ((KeyMask, KeySym), X ())
 keyPassThrough (keyMask, keySym) (condition, action) = ((keyMask, keySym) , ifElse condition action (sendKey keyMask keySym))
 
+executeScript scriptFile = do
+                  xmonadDir <- getXMonadDir
+                  spawn (xmonadDir ++ "/" ++ scriptFile)
+
 myLayout = avoidStruts $ smartBorders $ onWorkspace "a" (Full ||| (def :: Tall a)) $ onWorkspace "s" ((def :: Tall a) ||| Full) $ onWorkspace "d" (Tall 1 0.05 0.5) $ onWorkspace "f" (def :: TwoPane a) $ (GridRatio (1/1)) ||| (def :: Tall a)
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
@@ -74,7 +78,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- quit, or restart
     , ((modMask .|. mod4Mask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
-    , ((modMask .|. mod4Mask, xK_r     ), spawn "xmonad --recompile && xmonad --restart && killall polybar && polybar example") -- %! Restart xmonad and taffybar
+    , ((modMask .|. mod4Mask, xK_r     ), executeScript "recompile.sh" >> spawn "xmonad --restart && killall polybar && polybar example") -- %! Restart xmonad and taffybar
     -- media controls
     , ((controlMask .|. shiftMask, xK_KP_Begin ), spawn "clementine --play-pause") -- %! play pause clementine
     , ((controlMask .|. shiftMask, xK_KP_Up ),    spawn "clementine --volume-up") -- %! volume up
