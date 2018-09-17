@@ -131,7 +131,7 @@ windowSortHook = composeAll $
     ]
     where
     myShifts "a" = ["Chromium"]
-    myShifts "s" = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "jetbrains-webstorm", "dota2", "Atom"]
+    myShifts "s" = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "jetbrains-webstorm", "dota2", "Atom", "Sublime_text"]
     myShifts "d" = ["Skype", "Steam", "discord"]
     myShifts "f" = ["Clementine", "Deluge"]
     myShifts "z" = []
