@@ -143,7 +143,7 @@ windowSortHook = composeAll $
 
 main = xmonad $ ewmh $ def {focusFollowsMouse = False,
                                          clickJustFocuses = False,
-                                         layoutHook = fullscreenFull myLayout,
+                                         layoutHook = myLayout,
                                          workspaces = [a:[]| a<-"asdfzxcv"],
                                          keys = myKeys,
                                          mouseBindings = myMouse,
