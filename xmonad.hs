@@ -113,7 +113,7 @@ myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
 -- Sort windows
 windowSortHook = composeAll $
     [ composeOne . concat $ --hooks to decide the position of a window
-        [ [isDialog -?> doFloat <+> insertPosition Above Newer]--insert dialog above current window because otherwise it gets covered by other dialog and float it
+        [ [(isDialog <||> isInProperty "_NET_WM_WINDOW_TYPE" "_NET_WM_WINDOW_TYPE_UTILITY") -?> doFloat <+> insertPosition Above Newer]--insert dialog above current window because otherwise it gets covered by other dialog and float it
         , [(className =? x <||> title =? "Steam") -?> insertPosition Master Newer | x <- masters]  --Insert windows in masters as the master window; steam has annoying window classes so we match it by title
         , [return True -?> insertPosition Below Newer ] --default insert position, the always true Query Bool guarantees that this hook happens if all others fail
         ]
