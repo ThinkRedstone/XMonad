@@ -47,8 +47,8 @@ modules-left = ewmh xkeyboard
 modules-center =
 modules-right =  xbacklight volume battery date mpd
 
-tray-position = right
-tray-maxsize = 27
+; tray-position = right
+; tray-maxsize = 27
 
 ;wm-restack = bspwm
 ;wm-restack = i3
