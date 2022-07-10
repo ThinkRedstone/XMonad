@@ -19,7 +19,7 @@ import XMonad.Layout.Fullscreen hiding (fullscreenEventHook)
 import qualified XMonad.StackSet as W
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import XMonad.Util.WindowProperties
-import XMonad.Actions.CycleWS
+import XMonad.Actions.CycleWS hiding (Not)
 
 import XMonad.ManageHook
 import XMonad.Hooks.ManageDocks
@@ -44,8 +44,9 @@ ifElse condition true false = do
 keyPassThrough :: (KeyMask, KeySym) -> (X Bool, X ()) -> ((KeyMask, KeySym), X ())
 keyPassThrough (keyMask, keySym) (condition, action) = ((keyMask, keySym) , ifElse condition action (sendKey keyMask keySym))
 
+executeScript :: String -> X ()
 executeScript scriptFile = do
-                  xmonadDir <- getXMonadDir
+                  xmonadDir <- asks (cfgDir . directories)
                   spawn (xmonadDir ++ "/" ++ scriptFile)
 
 myLayout = avoidStruts $ smartBorders $ onWorkspace "a" (Full ||| (def :: Tall a)) $ onWorkspace "s" ((def :: Tall a) ||| Full) $ onWorkspace "d" (Tall 1 0.05 0.5) $ onWorkspace "f" (def :: TwoPane a) $ (GridRatio (1/1)) ||| (def :: Tall a)
@@ -141,12 +142,11 @@ windowSortHook = composeAll $
     masters = ["jetbrains-pycharm-ce", "jetbrains-idea-ce", "jetbrains-webstorm", "Deluge"]
 
 
-main = xmonad $ ewmh $ def {focusFollowsMouse = False,
-                                         clickJustFocuses = False,
-                                         layoutHook = myLayout,
-                                         workspaces = [a:[]| a<-"asdfzxcv"],
-                                         keys = myKeys,
-                                         mouseBindings = myMouse,
-                                         manageHook= manageDocks <+> windowSortHook <+> manageHook def,
-                                         handleEventHook = fullscreenEventHook <+> docksEventHook,
-                                         startupHook = setWMName "LG3D"}
+main = xmonad $ ewmh $ ewmhFullscreen $ docks $ def {focusFollowsMouse = False,
+                                                     clickJustFocuses = False,
+                                                     layoutHook = myLayout,
+                                                     workspaces = [a:[]| a<-"asdfzxcv"],
+                                                     keys = myKeys,
+                                                     mouseBindings = myMouse,
+                                                     manageHook= manageDocks <+> windowSortHook <+> manageHook def,
+                                                     startupHook = setWMName "LG3D"}
