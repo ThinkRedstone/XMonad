@@ -129,6 +129,7 @@ windowSortHook = composeAll $
         , [(className =? x ) -?> doShift "v" | x <- myShifts "v"]
         ]
     , isFullscreen --> doFullFloat --handle for fullscreen windows
+    , checkDock --> doLower
     ]
     where
     myShifts "a" = ["Chromium"]
@@ -148,5 +149,5 @@ main = xmonad $ ewmh $ ewmhFullscreen $ docks $ def {focusFollowsMouse = False,
                                                      workspaces = [a:[]| a<-"asdfzxcv"],
                                                      keys = myKeys,
                                                      mouseBindings = myMouse,
-                                                     manageHook= manageDocks <+> windowSortHook <+> manageHook def,
+                                                     manageHook= windowSortHook <+> manageHook def,
                                                      startupHook = setWMName "LG3D"}
