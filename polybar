@@ -51,7 +51,7 @@ separator-foreground = ${colors.disabled}
 font-0 = monospace;2
 
 modules-left = xworkspaces xwindow
-modules-right = filesystem pulseaudio xkeyboard memory cpu wlan eth date
+modules-right = battery filesystem pulseaudio xkeyboard memory cpu wlan eth date
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -100,6 +100,12 @@ label-mounted = %{F#F0C674}%mountpoint%%{F-} %percentage_used%%
 
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.disabled}
+
+[module/battery]
+type = internal/battery
+time-format = %H:%M
+label-discharging = %{F#fb4934}BAT%{F-} %percentage%% 
+label-low = %{F#fb4934}BAT %percentage%% %{F-}
 
 [module/pulseaudio]
 type = internal/pulseaudio
