@@ -1,4 +1,3 @@
-
 import Data.Default
 import qualified Data.Map as M
 import System.Exit
@@ -79,7 +78,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- quit, or restart
     , ((modMask .|. mod4Mask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
-    , ((modMask .|. mod4Mask, xK_r     ), executeScript "recompile.sh" >> spawn "xmonad --restart && killall polybar && polybar example") -- %! Restart xmonad and taffybar
+    , ((modMask .|. mod4Mask, xK_r     ), spawn "xmonad --recompile" >> spawn "xmonad --restart && (killall polybar; polybar -c ~/.xmonad/polybar example)") -- %! Restart xmonad and polybar
     -- media controls
     , ((controlMask .|. shiftMask, xK_KP_Begin ), spawn "clementine --play-pause") -- %! play pause clementine
     , ((controlMask .|. shiftMask, xK_KP_Up ),    spawn "clementine --volume-up") -- %! volume up
