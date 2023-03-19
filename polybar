@@ -106,6 +106,8 @@ type = internal/battery
 time-format = %H:%M
 label-discharging = %{F#fb4934}BAT%{F-} %percentage%% 
 label-low = %{F#fb4934}BAT %percentage%% %{F-}
+label-charging = %{F#fabd2f}CHRG %percentage%% %{F-}
+label-full = %{F#ebdbb2}FULL %percentage%% %{F-}
 
 [module/pulseaudio]
 type = internal/pulseaudio
