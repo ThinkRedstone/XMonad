@@ -26,6 +26,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.InsertPosition
 import XMonad.Util.Paste
+import XMonad.Actions.PhysicalScreens
 
 
 import XMonad.Hooks.EwmhDesktops
@@ -99,6 +100,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [((m .|. modMask, k), windows $ f i)
         | (i, k) <- zip (delete "f" (XMonad.workspaces conf)) [xK_a, xK_s, xK_d, xK_z, xK_x, xK_c, xK_v]
         , (f, m) <- [(W.greedyView, 0), (\i -> W.greedyView i . W.shift i, shiftMask), (W.shift, controlMask)]]
+    ++    
+    -- switch screen by ID
+    [((modMask, key), viewScreen horizontalScreenOrderer screen) 
+      | (key, screen) <- zip [xK_j, xK_k, xK_l] [0..]]
+
 
 myMouse (XConfig {XMonad.modMask = modMask}) = M.fromList [
     -- mod-button1 %! Set the window to floating mode and move by dragging
