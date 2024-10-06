@@ -53,7 +53,7 @@ myLayout = avoidStruts $ smartBorders $ onWorkspace "a" (Full ||| (def :: Tall a
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- launching and killing programs
-    [ ((modMask .|. controlMask, xK_t), spawn "xfce4-terminal") -- %! Launch terminal
+    [ ((modMask .|. controlMask, xK_t), spawn "kitty") -- %! Launch terminal
     , ((modMask .|. controlMask, xK_f), spawn "thunar") -- %! Launch file browser
     , (keyPassThrough (modMask,  xK_r) (focusedHasProperty (Not $ ClassName "dota2") <||> withWindowSet  (return . isNothing . W.peek) , spawn "dmenu_run -sf '#ff0000' -sb '#111111'")) -- %! Launch dmenu
     , (keyPassThrough (modMask,  xK_q) (focusedHasProperty (Not $ ClassName "dota2"), kill)) -- %! Close the focused window
